@@ -9,6 +9,7 @@ namespace Users.Controllers
     public class HomeController : Controller
     {
         // GET: Home
+        [Authorize]
         public ActionResult Index()
         {
             var data = new Dictionary<string, object>();
