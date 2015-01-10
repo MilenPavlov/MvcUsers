@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.WebSockets;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -14,7 +15,11 @@ namespace Users.Controllers
     {
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
-        {     
+        {
+            if (HttpContext.User.Identity.IsAuthenticated)
+            {
+                return View("Error", new string[] {"Access Denied"});
+            }
             ViewBag.returnUrl = returnUrl;
             return View();
         }
@@ -47,6 +52,13 @@ namespace Users.Controllers
             }
             ViewBag.returnUrl = returnUrl;
             return View(details);
+        }
+
+        [Authorize]
+        public ActionResult Logout()
+        {
+            AuthManager.SignOut();
+            return RedirectToAction("Index", "Home");
         }
 
         private IAuthenticationManager AuthManager

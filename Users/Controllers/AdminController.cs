@@ -11,6 +11,7 @@ using Users.Models;
 
 namespace Users.Controllers
 {
+    [Authorize(Roles = "Administrators")]
     public class AdminController : Controller
     {
         // GET: Admin
